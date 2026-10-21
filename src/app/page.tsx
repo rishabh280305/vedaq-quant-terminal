@@ -1,4 +1,5 @@
 import { WatchlistDemo } from "@/components/watchlist-demo";
+import { OptionsDemo } from "@/components/options-demo";
 
 const metrics = [["NIFTY 50", "Demo dataset"], ["S&P 500", "Demo dataset"], ["Options engine", "Black–Scholes"], ["Backtester", "Time-aware"]];
 
@@ -10,5 +11,6 @@ export default function Home() {
       <div className="border border-emerald-400/20 bg-[#0b1213] p-5 shadow-2xl shadow-emerald-950/40"><div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4 font-mono text-xs text-slate-500"><span>VEDAQ // SYSTEM OVERVIEW</span><span className="text-emerald-400">● ONLINE</span></div><div className="grid gap-px bg-white/10 sm:grid-cols-2">{metrics.map(([name, value]) => <div className="bg-[#0b1213] p-5" key={name}><p className="font-mono text-xs text-slate-500">{name}</p><p className="mt-2 text-lg text-slate-100">{value}</p></div>)}</div><div className="mt-5 border-l-2 border-amber-300 bg-amber-300/5 p-4 text-sm leading-6 text-amber-100/80">No live prices are shown until a legitimate data provider is connected. Demo datasets will be labeled with source and date. Not investment advice.</div></div>
     </section>
     <WatchlistDemo />
+    <OptionsDemo />
   </main>;
 }
