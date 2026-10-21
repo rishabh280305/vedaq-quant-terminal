@@ -21,7 +21,10 @@ export function WatchlistDemo() {
     setAuthenticated(true);
   }, []);
 
-  useEffect(() => { load().catch(() => { setAuthenticated(false); setMessage("The workspace is temporarily unavailable."); }); }, [load]);
+  useEffect(() => {
+    const task = window.setTimeout(() => { void load().catch(() => { setAuthenticated(false); setMessage("The workspace is temporarily unavailable."); }); }, 0);
+    return () => window.clearTimeout(task);
+  }, [load]);
 
   async function enterWorkspace() {
     setBusy(true); setMessage("");
