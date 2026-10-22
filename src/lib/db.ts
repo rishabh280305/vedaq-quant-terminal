@@ -31,6 +31,7 @@ export async function database() {
       traded_at date NOT NULL,
       created_at timestamptz NOT NULL DEFAULT now()
     )`;
+    await sql`CREATE TABLE IF NOT EXISTS vedaq.market_candles (symbol text NOT NULL, observed_on date NOT NULL, open numeric NOT NULL, high numeric NOT NULL, low numeric NOT NULL, close numeric NOT NULL, volume bigint NOT NULL, provider text NOT NULL, ingested_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(symbol,observed_on,provider))`;
   })();
   await initialized;
   return sql;

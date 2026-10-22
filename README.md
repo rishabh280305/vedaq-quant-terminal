@@ -9,7 +9,10 @@ VEDAQ is a transparent quantitative-research terminal for US and Indian markets.
 - European call/put pricing with delta, gamma, annual theta, vega, rho, and implied volatility
 - No-arbitrage checks, documented model assumptions, and unit benchmarks
 - Dated deterministic scenario candles with SMA, EMA, RSI, MACD, Bollinger Bands, and annualized volatility
+- Provider abstraction plus idempotent, provenance-bearing Postgres candle ingestion and a visible scenario chart
 - No-look-ahead backtest with next-open execution, fees, slippage, drawdown, Sharpe ratio, equity curve, and CSV export
+- Synthetic 30-day option-chain analytics covering OI walls, put-call ratio, IV skew, simplified gamma exposure, max pain, ATM straddle, filters, and CSV
+- Explainable rolling z-score price/volume anomaly flags that are never labeled model output
 - Persistent portfolio transaction ledger with oversell protection and cost-ledger positions
 - Retrieval-only research with citations and an explicit no-LLM mode
 - Walk-forward Random Forest/XGBoost Python training entry point that exports run artifacts rather than checked-in claims

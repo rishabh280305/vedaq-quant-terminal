@@ -1,4 +1,5 @@
 export type Candle = { date: string; open: number; high: number; low: number; close: number; volume: number };
+export type MarketProvider={id:string;live:boolean;description:string;candles:(symbol:string)=>Promise<Candle[]>};
 
 export type BacktestConfig = {
   shortWindow: number;
@@ -27,6 +28,8 @@ export function demoCandles(days = 260): Candle[] {
     };
   });
 }
+
+export const demoScenarioProvider:MarketProvider={id:"vedaq-deterministic-scenario-v1",live:false,description:"Generated, deterministic research scenario; not observed market history.",async candles(symbol){if(symbol!=="VEDAQ-DEMO")throw new Error("The built-in provider supports VEDAQ-DEMO only.");return demoCandles()}};
 
 function round(value: number, digits = 4) { return Number(value.toFixed(digits)); }
 
@@ -69,6 +72,8 @@ export function indicators(candles: Candle[]) {
   const annualizedVolatility = returns.length < 2 ? 0 : Math.sqrt(252) * Math.sqrt(returns.reduce((sum, value) => sum + (value - returns.reduce((a, b) => a + b, 0) / returns.length) ** 2, 0) / (returns.length - 1));
   return { sma20: middle, ema12: fast, rsi14: rsi(closes), macd, signal, bands, annualizedVolatility: round(annualizedVolatility * 100, 2) };
 }
+
+export function detectAnomalies(candles:Candle[]){const volumes=candles.map(item=>item.volume);const returns=candles.map((item,index)=>index?item.close/candles[index-1].close-1:0);return candles.flatMap((candle,index)=>{if(index<20)return[];const volumeWindow=volumes.slice(index-20,index);const returnWindow=returns.slice(index-20,index);const volumeMean=volumeWindow.reduce((a,b)=>a+b,0)/volumeWindow.length;const returnMean=returnWindow.reduce((a,b)=>a+b,0)/returnWindow.length;const volumeStd=Math.sqrt(volumeWindow.reduce((sum,value)=>sum+(value-volumeMean)**2,0)/volumeWindow.length)||1;const returnStd=Math.sqrt(returnWindow.reduce((sum,value)=>sum+(value-returnMean)**2,0)/returnWindow.length)||1;const volumeZ=(candle.volume-volumeMean)/volumeStd;const returnZ=(returns[index]-returnMean)/returnStd;return Math.abs(volumeZ)>=2.5||Math.abs(returnZ)>=2.5?[{date:candle.date,close:candle.close,volumeZ:round(volumeZ,2),returnZ:round(returnZ,2),mode:"rolling-z-score-rule",explanation:`${Math.abs(volumeZ)>=2.5?"volume ":""}${Math.abs(returnZ)>=2.5?"return":""}`.trim()}]:[]})}
 
 export function backtest(candles: Candle[], config: BacktestConfig) {
   if (config.shortWindow >= config.longWindow) throw new Error("Short window must be smaller than long window.");
