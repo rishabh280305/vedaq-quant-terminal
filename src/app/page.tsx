@@ -3,6 +3,7 @@ import { OptionsDemo } from "@/components/options-demo";
 import { ResearchWorkbench } from "@/components/research-workbench";
 import { MarketWorkbench } from "@/components/market-workbench";
 import { OptionChainDemo } from "@/components/option-chain-demo";
+import { PortfolioWorkbench } from "@/components/portfolio-workbench";
 
 const metrics = [["NIFTY 50", "Demo dataset"], ["S&P 500", "Demo dataset"], ["Options engine", "Black–Scholes"], ["Backtester", "Time-aware"]];
 
@@ -18,5 +19,6 @@ export default function Home() {
     <OptionChainDemo />
     <MarketWorkbench />
     <ResearchWorkbench />
+    <PortfolioWorkbench />
   </main>;
 }
